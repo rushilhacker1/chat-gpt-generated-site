@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact Us</title>
+    <link rel="stylesheet" type="text/css" href="contact.css">
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="/main/index.htm">MyWebsite</a>
+        </div>
+        <div class="menu">
+          <ul>
+            <li><a href="/main/index.htm">Home</a></li>
+            <li><a href="/AboutUs/about.htm">About</a></li>
+            <li><a href="/ContactUs/contact.htm">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <h1>Contact Us</h1>
+      <p>Have a question or comment? Please fill out the form below and we'll get back to you as soon as possible.</p>
+      <form method="post" action="/data/send-mail.php">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+
+        <label for="message">Message:</label>
+        <textarea name="message" id="message" rows="5" required></textarea>
+
+        <input type="submit" value="Send">
+      </form>
+      <div class="contact-details">
+        <h2>Other Contacting Details</h2>
+        <p><strong>Email:</strong> rushiling121@hotmail.com, rushiling121@gmail.com, rushiling123@gmail.com</p>
+        <p><strong>Phone:</strong> 8104314282</p>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2023 MyWebsite. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
