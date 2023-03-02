@@ -1,44 +1,44 @@
-from flask import Flask, render_template, request
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from flask_restful import Api, Resource
 
+# Create a Flask app instance
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Set up a connection to a SQLite database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///exaple.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['DEBUG'] = True
+app.config['HOST'] = '192.168.1.8'
 db = SQLAlchemy(app)
 
+
+# Define a model for a blog post
 class BlogPost(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    author = db.Column(db.String(50), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    id      = db.Column(db.Integer, primary_key=True)
+    title   = db.Column(db.String(80), nullable=False)
+    type    = db.Column(db.String(15), nullable=False)
+    content = db.Column(db.String(500), nullable=False)
 
     def __repr__(self):
-        return f"Blog post {self.id}"
+        return f'<BlogPost {self.title}>'
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+with app.app_context():
+    db.create_all()
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
 
-@app.route('/explore')
-def explore():
-    search = request.args.get('search')
-    if search:
-        posts = BlogPost.query.filter(BlogPost.title.contains(search) | BlogPost.content.contains(search)).all()
-    else:
-        posts = BlogPost.query.order_by(BlogPost.date_posted.desc()).all()
-    return render_template('explore.html', posts=posts)
+# Set up a Flask-Restful API
+api = Api(app)
 
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
+# Define a resource for getting all blog posts
+class BlogPostList(Resource):
+    def get(self):
+        posts = BlogPost.query.all()
+        return [{'id': post.id, 'title': post.title,'type': post.type, 'content': post.content} for post in posts]
+
+# Register the resource with the API
+api.add_resource(BlogPostList, '/blog/posts')
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.2', debug=True)
+    app.run()
