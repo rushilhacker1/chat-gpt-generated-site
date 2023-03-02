@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Blog</title>
+    <link rel="stylesheet" type="text/css" href="/explore/explore.css">
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/main/index.htm">Home</a></li>
+          <li><a href="/AboutUs/about.htm">About</a></li>
+          <li><a href="/ContactUs/contact.htm">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="cards-container"></div>
+
+      <script>
+        const container = document.querySelector(".cards-container");
+
+        fetch("http://ok-udhcysadoirxsreygehjksdiof9.pagekite.me/blog/posts/0")
+          .then(response => response.json())
+          .then(posts => {
+            posts.forEach(post => {
+              const card = document.createElement("div");
+              card.classList.add("card");
+
+              const cardImg = document.createElement("div");
+              cardImg.classList.add("card-img");
+              const img = document.createElement("img");
+              img.src = "https://via.placeholder.com/350x200";
+              img.alt = post.title;
+              cardImg.appendChild(img);
+
+              const cardContent = document.createElement("div");
+              cardContent.classList.add("card-content");
+              const title = document.createElement("h3");
+              title.innerText = post.title;
+              const author = document.createElement("p");
+              author.classList.add("card-author");
+              author.innerText = `By Author Name ${post.userId} | February 26, 2023`;
+              const body = document.createElement("p");
+              body.innerText = post.content;
+              const readMore = document.createElement("a");
+              readMore.classList.add("btn");
+              readMore.href = "#";
+              readMore.innerText = "Read More";
+
+              cardContent.appendChild(title);
+              cardContent.appendChild(author);
+              cardContent.appendChild(body);
+              cardContent.appendChild(readMore);
+
+              card.appendChild(cardImg);
+              card.appendChild(cardContent);
+
+              container.appendChild(card);
+            });
+          })
+          .catch(error => console.error(error));
+      </script>
+    </main>
+  </body>
+</html>
